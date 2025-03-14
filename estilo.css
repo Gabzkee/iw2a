@@ -4,3 +4,7 @@ html, body{
     height: 100%;
     background-color: #aaa;
 }
+
+div {
+    border: 1px solid #f00:
+}
