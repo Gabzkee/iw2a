@@ -22,7 +22,7 @@
         </thead>
         <tbody>
             <tr>
-                <td id="b1">12</td>
+                <td id="b1" onclick="MarcarCartela(this)">12</td>
                 <td id="i1">30</td>
                 <td id="n1">33</td>
                 <td id="g1">51</td>
@@ -58,6 +58,30 @@
             </tr>
         </tbody>
     </table>
+<br>
+
+<button id="botao" onclick="Piscar()">
+    Piscando o botão    
+</button>
+
+<script>
+    funcition MarcarCartela(td)
+    {
+        td.style.backgroundColor = 'black'
+        td.style.backgroundColor = 'white'
+    }
+    function Piscar()
+    {
+        var botao = document.getElementById("botao"); 
+        if(botao.style.backgroundColor == 'red')
+        {
+            botao.style.backgroundColor = 'blue';
+        }else{
+            botao.style.backgroundColor = 'red';
+        }
+    }
+
+</script>
 </body>
 
 </html>
