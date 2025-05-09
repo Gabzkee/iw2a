@@ -1,0 +1,11 @@
+html, body{
+    margin: 0;
+    padding:0;
+    height: 100%;
+    background-color: rgb(162, 195, 255); 
+    color: rgb(49, 108, 160);
+}
+
+div{
+    border: 1px solid #331dff;
+}

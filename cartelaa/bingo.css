@@ -1,0 +1,26 @@
+body, html{
+    background-color: #023179;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabela{
+    background-color: rgb(87, 150, 243);
+    border: 5px double #000000;
+    border-radius: 5%;
+    font-size: 50px;
+    padding: 5px 8px;
+    color: #023179;
+}
+
+td{
+    background-color: hwb(216 54% 0%);
+    border: 1px solid;
+    border-radius: 10%;
+    text-align: center;
+    padding: 10px 15px;
+}
