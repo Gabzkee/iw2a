@@ -29,18 +29,24 @@
     </form>
 
     <script>
-        var endereco = {
-            "cep": "1200222",
-            "rua": "Avenida Parana",
-            "numero": "446",
-            "bairro": "Centro",
-            "cidade": "Sao Paulo",
-            "estado": "Sao Paulo"
-        }
-        var cidade = document.getElementById("cidade")
-        cidade.value = endereco.cidade
-        var cep = document.GetElementById("cep")
+    function Clicar()
+    {    
+        var cep = document.getElementById("cep")
         var url = "https://viacep.com.br/ws/"+cep.value+"/json/"
+        fetch(url)
+        .then((resposta)=> resposta.json())
+        .then((dados) => {
+            var cidade  = document.getElementById("cidade")
+            var estado  = document.getElementById("estado")
+            var endereco  = document.getElementById("endereco")
+            var bairro  = document.getElementById("bairro")
+            cidade.value = dados.localidade
+            estado.value = dados.estado
+            bairro.value = dados.bairro
+            endereco.value = dados.logradouro
+            
+        })
+    }
     </script>
 
 
