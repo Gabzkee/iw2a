@@ -1,5 +1,5 @@
 body, html{
-    background-color: #023179;
+    background-color: #ff9c19;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -9,8 +9,8 @@ body, html{
 }
 
 .tabela{
-    background-color: rgb(87, 150, 243);
-    border: 5px double #000000;
+    background-color: rgb(255, 255, 255);
+    border: 5px double #ff4444;
     border-radius: 5%;
     font-size: 50px;
     padding: 5px 8px;
@@ -18,7 +18,7 @@ body, html{
 }
 
 td{
-    background-color: hwb(216 54% 0%);
+    background-color: hwb(216 82% 0%);
     border: 1px solid;
     border-radius: 10%;
     text-align: center;
