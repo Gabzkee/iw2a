@@ -28,6 +28,21 @@
         </button>
     </form>
 
+    <script>
+        var endereco = {
+            "cep": "1200222",
+            "rua": "Avenida Parana",
+            "numero": "446",
+            "bairro": "Centro",
+            "cidade": "Sao Paulo",
+            "estado": "Sao Paulo"
+        }
+        var cidade = document.getElementById("cidade")
+        cidade.value = endereco.cidade
+        var cep = document.GetElementById("cep")
+        var url = "https://viacep.com.br/ws/"+cep.value+"/json/"
+    </script>
+
 
 </body>
 </html>
