@@ -1,5 +1,5 @@
 body, html{
-    background-color: #ff9c19;
+    background-color: #ab19ff;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -8,9 +8,29 @@ body, html{
     align-items: center;
 }
 
-.tabela{
-    background-color: rgb(255, 255, 255);
-    border: 5px double #461818;
+.BotaoGerarCartela{
+    
+    background-color:rgb(0, 0, 0);
+    color:azure;
+}
+
+.cartela{
+    background-color: rgb(46, 42, 42);
+    border: 10px double #690c0c;
+    border-radius: 5%;
+    font-size: 50px;
+    padding: 5px 8px;
+    color: #2570e0;
+}
+
+.botaoSorteiaNumero{
+    background-color:rgb(0, 0, 0);
+    color:azure;
+}
+
+.NumerosGerados{
+    background-color: rgb(0, 0, 0);
+    border: 10px double #e64747;
     border-radius: 5%;
     font-size: 50px;
     padding: 5px 8px;
@@ -18,8 +38,8 @@ body, html{
 }
 
 td{
-    background-color: hwb(216 82% 0%);
-    border: 1px solid;
+    background-color: hwb(184 67% 0%);
+    border: 5px solid;
     border-radius: 10%;
     text-align: center;
     padding: 10px 15px;
