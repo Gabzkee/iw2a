@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Tipo Pokémon com Cor</title>
+  <style>
+    .fire { color: red; }
+    .water { color: blue; }
+    .grass { color: green; }
+    .electric { color: gold; }
+    .psychic { color: purple; }
+    .ice { color: cyan; }
+    .normal { color: gray; }
+    .fighting { color: brown; }
+    .poison { color: mediumvioletred; }
+    .default { color: black; }
+  </style>
+</head>
+<body>
+
+  <h1 id="nomePokemon">Carregando...</h1>
+  <h1> AAAAAAAAAAAAAAAAAA</h1>
+
+  <script>
+    const pokemonNome = "Pichu"; // Você pode trocar esse nome
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNome}`)
+      .then(response => response.json())
+      .then(data => {
+        const nome = data.name;
+        const tipo = data.types[0].type.name; // Pega o primeiro tipo
+        const elemento = document.getElementById("nomePokemon");
+
+        elemento.textContent = `Nome: ${nome} | Tipo: ${tipo}`;
+        elemento.classList.add(tipo); // Aplica a classe CSS com o nome do tipo
+      })
+      .catch(error => {
+        document.getElementById("nomePokemon").textContent = "Erro ao carregar Pokémon.";
+        console.error(error);
+      });
+  </script>
+
+</body>
+</html>

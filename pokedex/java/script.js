@@ -1,7 +1,7 @@
 const pokemonName = document.querySelector('.pokemon_name');
 const pokemonNumber = document.querySelector('.pokemon_number');
 const pokemonImage = document.querySelector('.pokemon_image');
-
+const pokemonType = document.querySelector('.pokemon_type');
 const form = document.querySelector('.form');
 const input = document.querySelector('.input_search');
 const buttonPrev = document.querySelector('.btn-prev');
@@ -20,6 +20,8 @@ const fetchPokemon = async (pokemon) => {
     }
 }
 
+
+
 const renderPokemon = async (pokemon) => {
 
     pokemonName.innerHTML = 'Loading';
@@ -30,6 +32,7 @@ const renderPokemon = async (pokemon) => {
         pokemonNumber.innerHTML = data.id;
         pokemonImage.src = data['sprites']['versions']['generation-viii']['icons']['front_default'];
         input.value ='';
+        pokemonType.innerHTML = data['types']['0']['type']['name'];
         pokemonCryUrl = data['cries']['latest'];
         searchPokemon = data.id;
     } else {
@@ -53,6 +56,9 @@ buttonPrev.addEventListener('click', () => {
     }
     
 });
+
+if(pokemonType == 'fire')
+    
 
 buttonNext.addEventListener('click', () => {
     searchPokemon += 1;
