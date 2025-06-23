@@ -36,10 +36,15 @@ main {
 .pokemon_data {
     position: absolute;
     font-weight: 600;
-    color: #aaa;
+    color: #988686;
     top: 54.5%;
     right: 27%;
     font-size: clamp(8px, 5vw, 25px);
+}
+
+.pokemon_type{
+    text-transform: capitalize;
+
 }
 
 .pokemon_name {
@@ -89,6 +94,12 @@ main {
     box-shadow: -2px 3px 0 #222, -4px 6px 0 #000;
 }
 
+.som{
+    position: absolute;
+    bottom: 21%;
+    width: 100%;
+}
+
 .sound {
     width: 50%;
     padding: 2px;
@@ -99,6 +110,10 @@ main {
     color: white;
     background-color: #0e5126;
     box-shadow: -2px 3px 0 #06280f, -4px 6px 0 #013713;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 18%;
 }
 
 .button:active {

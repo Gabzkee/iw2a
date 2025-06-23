@@ -1,43 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Os Links-->
     <link rel="icon" href="./favicons/361998.png">
     <link rel="stylesheet" href="./pokedex.css">
-
-    <!--JS-->
-    <script defer src="./java/script.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <title>Pokedex do Nerd</title>
 </head>
+
 <body>
 
-<main>
-    <img src="./images/pokedex.png" alt="pokedex" class="pokedex">
-    
-    <h1 class="pokemon_data">
-        <span class="pokemon_number"></span>
-        <span class="pokemon_name"></span>
-    </h1>
-    
-    <form class="form">
-        <input 
-        type="search" 
-        class="input_search"
-        placeholder="Nome ou Número" 
-        required>
-    </form>
+    <main>
+        <img src="./images/pokedex.png" alt="pokedex" class="pokedex">
 
-    <div class="buttons">
-        <button class="button btn-prev">&#60;- Prev </button>
-        <button class="button btn-next"> Next-&#62;</button>
-        <button class="sound">Sound</button>
-    </div>
-    
+        <h1 class="pokemon_data">
+            <span class="pokemon_number"></span>
+            <span class="pokemon_name"></span>
+            <span class="pokemon_type"></span>
+        </h1>
 
-    <img src="" alt="pokemon" class="pokemon_image">
-</main>
+        <form class="form">
+            <input type="search" class="input_search" placeholder="Nome ou Número" required>
+        </form>
+
+        <div class="buttons">
+            <button class="button btn-prev">&#60;- Prev </button>
+            <button class="button btn-next"> Next-&#62;</button>
+
+        </div>
+        <div class="som">
+            <button class="sound">Sound</button>
+        </div>
+
+
+        <img src="" alt="pokemon" class="pokemon_image">
+    </main>
 </body>
+
+<script>
+    const pokemonName = document.querySelector('.pokemon_name');
+const pokemonNumber = document.querySelector('.pokemon_number');
+const pokemonImage = document.querySelector('.pokemon_image');
+const pokemonType = document.querySelector('.pokemon_type');
+const form = document.querySelector('.form');
+const input = document.querySelector('.input_search');
+const buttonPrev = document.querySelector('.btn-prev');
+const buttonNext = document.querySelector('.btn-next');
+const soundButton = document.querySelector('.sound');
+
+let searchPokemon = 1;
+let pokemonCryUrl = '';
+
+const fetchPokemon = async (pokemon) => {
+    const APIResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+
+    if (APIResponse.status === 200) {
+        const data = await APIResponse.json();
+        return data;   
+    }
+}
+
+
+
+const renderPokemon = async (pokemon) => {
+
+    pokemonName.innerHTML = 'Buscando...';
+
+    const data = await fetchPokemon(pokemon);
+    if (data) {
+        pokemonName.innerHTML = data.name;
+        pokemonName.style.color = 'black'
+        pokemonName.style.fontFamily = 'Oxanium';
+        pokemonNumber.innerHTML = data.id;
+        pokemonNumber.style.fontFamily = 'Oxanium'
+        pokemonImage.src = data['sprites']['versions']['generation-viii']['icons']['front_default'];
+        input.value ='';
+        pokemonType.innerHTML = data['types']['0']['type']['name'];
+        pokemonType.style.fontFamily = 'Oxanium'
+        pokemonCryUrl = data['cries']['latest'];
+        searchPokemon = data.id;
+    } else {
+        mostrarMissingNo();
+    }
+
+     function ColorirTipagem(tipo) {
+    const cores = {
+        fire: "red",
+        water: "blue",
+        grass: "green",
+        electric: "gold",
+        psychic: "purple",
+        normal: "gray",
+        dark: "black",
+        ice: "lightblue",
+        bug: "olive",
+        poison: "violet",
+        rock: "brown",
+        ghost: "indigo",
+        fairy: "pink",
+        dragon: "orange",
+        steel: "silver",
+        fighting: "darkred",
+        ground: "sienna",
+        flying: "skyblue",
+    };
+    pokemonType.style.color = cores[tipo.toLowerCase()] || "white";
+    pokemonNumber.style.color = cores[tipo.toLowerCase()] || "white";
+    
+}
+ColorirTipagem(data['types'][0]['type']['name']);
+
+    function mostrarMissingNo() {
+    pokemonName.innerHTML = `Missing No.`;
+    pokemonName.style.color = 'crimson';
+    pokemonName.style.fontFamily = "'VT323', monospace";
+    pokemonNumber.innerHTML = 'ERR0';
+    pokemonNumber.style.color = 'crimson';
+    pokemonNumber.style.fontFamily = "'VT323', monospace";
+    pokemonImage.src = 'images/Missingno.webp';
+    input.value = '';
+    pokemonType.innerHTML = '404';
+    pokemonType.style.color = 'crimson';
+    pokemonType.style.fontFamily = "'VT323', monospace";}
+    
+}
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    renderPokemon(input.value);
+
+});
+
+buttonPrev.addEventListener('click', () => {
+    if (searchPokemon > 1){
+        searchPokemon -= 1;
+        renderPokemon(searchPokemon)
+    }
+    
+});
+
+
+    
+
+buttonNext.addEventListener('click', () => {
+    searchPokemon += 1;
+    renderPokemon(searchPokemon);
+});
+
+soundButton.addEventListener('click', () => {
+    if (pokemonCryUrl) {
+        const audio = new Audio(pokemonCryUrl);
+        audio.play();
+    } else {
+        alert('Nenhum som disponível!');
+    }
+});
+
+renderPokemon(searchPokemon)
+</script>
+
 </html>
