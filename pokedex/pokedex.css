@@ -37,14 +37,19 @@ main {
     position: absolute;
     font-weight: 600;
     color: #988686;
-    top: 54.5%;
-    right: 27%;
+    top: 53.5%;
+    right: 49%;
     font-size: clamp(8px, 5vw, 25px);
 }
 
-.pokemon_type{
+.pokemon_types{
     text-transform: capitalize;
-
+    position: absolute;
+    font-weight: 600;
+    color: #988686;
+    top: 56.5%;
+    right: 29%;
+    font-size: clamp(8px, 5vw, 25px);
 }
 
 .pokemon_name {
