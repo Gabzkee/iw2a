@@ -13,4 +13,4 @@ if (!$conexao) {
 }
 
 // Registrar
-$id_item=
+$id_item=,

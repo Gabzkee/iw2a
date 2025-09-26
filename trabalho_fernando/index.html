@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atividade</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Objetos Levantaveis (Ou Não)</a>
+  </div>
+</nav>
+
+<main class="container my-4">
+  <div class="row g-4">
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Cadastrar / Editar</h5>
+          <form id="formObjeto">
+            <input type="hidden" id="id">
+            <div class="mb-3">
+              <label for="objeto" class="form-label">Objeto</label>
+              <input type="text" class="form-control" id="objeto"  required>
+            </div>
+            <div class="mb-3">
+              <label for="tipo" class="form-label">Tipo</label>
+              <input type="tipo" class="form-control" id="tipo" required>
+            </div>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" id="levantavel">
+              <label class="form-check-label" for="levantavel">Humanamente Levantavel?</label>
+            </div>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary" id="btnSalvar">Cadastrar</button>
+              <button type="button" class="btn btn-secondary" id="btnLimpar">Limpar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              Objetos Adicionados
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+                <div class="input-group w-100 w-md-auto" style="max-width: 420px;">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="busca" 
+                  >
+                  <button class="btn btn-outline-secondary" id="btnBuscar">
+                    Buscar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Objetos</th>
+                  <th>Tipo</th>
+                  <th>Levantavel?</th>
+                  <th class="text-end">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaCorpo">
+                <tr><td colspan="5" class="text-center text-muted">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const api = 'crud.php';
+
+async function listar(term = '') {
+  const url = term ? `${api}?action=list&search=${encodeURIComponent(term)}` : `${api}?action=list`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const tbody = document.getElementById('tabelaCorpo');
+  tbody.innerHTML = '';
+
+  if (!Array.isArray(data) || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhum registro.</td></tr>';
+    return;
+  }
+
+  for (const item of data) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${item.id}</td>
+      <td>${escapeHtml(item.objeto)}</td>
+      <td>${escapeHtml(item.tipo)}</td>
+      <td>${item.levantavel ? 'Sim' : 'Não'}</td>
+      <td class="text-end">
+        <button class="btn btn-sm btn-outline-primary me-2" onclick="editar(${item.id})">Editar</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="excluir(${item.id})">Excluir</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+async function editar(id) {
+  const res = await fetch(`${api}?action=get&id=${id}`);
+  const item = await res.json();
+  if (!item || !item.id) return;
+  document.getElementById('id').value = item.id;
+  document.getElementById('objeto').value = item.objeto || '';
+  document.getElementById('tipo').value = item.tipo || '';
+  document.getElementById('levantavel').checked = !!Number(item.levantavel);
+  document.getElementById('btnSalvar').textContent = 'Salvar';
+}
+
+async function excluir(id) {
+  if (!confirm('Excluir esse objeto?')) return;
+  const formData = new FormData();
+  formData.append('action', 'delete');
+  formData.append('id', id);
+
+  const res = await fetch(api, { method: 'POST', body: formData });
+  const out = await res.json();
+  if (out && out.ok) {
+    listar(document.getElementById('busca').value.trim());
+    limparForm();
+  } else {
+    alert(out.error || 'Falha ao excluir.');
+  }
+}
+
+function limparForm() {
+  document.getElementById('id').value = '';
+  document.getElementById('objeto').value = '';
+  document.getElementById('tipo').value = '';
+  document.getElementById('levantavel').checked = false;
+  document.getElementById('btnSalvar').textContent = 'Cadastrar';
+}
+
+document.getElementById('btnLimpar').addEventListener('click', limparForm);
+
+document.getElementById('btnBuscar').addEventListener('click', () => {
+  listar(document.getElementById('busca').value.trim());
+});
+document.getElementById('busca').addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') listar(document.getElementById('busca').value.trim());
+});
+
+document.getElementById('formObjeto').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('id').value.trim();
+  const objeto = document.getElementById('objeto').value.trim();
+  const tipo = document.getElementById('tipo').value.trim();
+  const levantavel = document.getElementById('levantavel').checked ? '1' : '0';
+
+  if (!objeto || !tipo) {
+    alert('Preencha objeto e tipo');
+    return;
+  }
+
+  const formData = new FormData();
+  if (id) {
+    formData.append('action', 'update');
+    formData.append('id', id);
+  } else {
+    formData.append('action', 'create');
+  }
+  formData.append('objeto', objeto);
+  formData.append('tipo', tipo);
+  formData.append('levantavel', levantavel);
+
+  const res = await fetch(api, { method: 'POST', body: formData });
+  const out = await res.json();
+
+  if (out && (out.ok || out.id)) {
+    listar(document.getElementById('busca').value.trim());
+    limparForm();
+  } else {
+    alert(out.error || 'Falha ao salvar.');
+  }
+});
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(String(str)));
+  return div.innerHTML;
+}
+
+function escapeHtml_UNUSED(str) {
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+listar();
+</script>
+</body>
+</html>
